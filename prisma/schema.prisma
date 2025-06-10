@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  kasir
+}
+
+// Schema database
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  password     String?
+  image        String?
+  role         Role          @default(kasir)
+  accounts     Account[]
+  Transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model ProductCategory {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  Products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("productCategory")
+}
+
+model Product {
+  id                String              @id @default(cuid())
+  name              String
+  description       String?
+  price             Int
+  discount          Int                 @default(0)
+  stock             Int
+  categoryId        String
+  category          ProductCategory     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  variants          ProductVariant[]
+  TransactionDetail TransactionDetail[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id                String              @id @default(cuid())
+  name              String
+  price             Int?
+  productId         String
+  product           Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  TransactionDetail TransactionDetail[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@map("productVariants")
+}
+
+model Transaction {
+  id         String              @id @default(cuid())
+  userId     String
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalPrice Int
+  details    TransactionDetail[]
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@map("transactions")
+}
+
+model TransactionDetail {
+  id            String          @id @default(cuid())
+  transactionId String
+  transaction   Transaction     @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId     String?
+  variant       ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  quantity      Int
+  priceAtSale   Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("transactionDetails")
+}
+
+model PasswordResetCode {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  code      String
+  expires   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("passwordResetCode")
+}
