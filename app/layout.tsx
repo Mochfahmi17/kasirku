@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import NextTopLoader from "nextjs-toploader";
 
 const monaSansFont = Mona_Sans({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${monaSansFont.className} antialiased`}>
+        <NextTopLoader color="#f97316" showSpinner={false} />
         {children}
         <Toaster richColors />
       </body>
