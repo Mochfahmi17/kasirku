@@ -26,6 +26,10 @@ const TableProduct = ({ data, isLoading, setSortBy }: TableProductProps) => {
   const [isPending, startTransition] = useTransition();
   const { key } = useProductQueryStore();
 
+  const toggleSortBy = (field: string) => {
+    setSortBy((prev) => (prev === field ? "createdAt" : field));
+  };
+
   const formatCurrency = (value: number) => {
     return Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -66,7 +70,7 @@ const TableProduct = ({ data, isLoading, setSortBy }: TableProductProps) => {
             </th>
             <th scope="col" className="px-6 py-3">
               <span
-                onClick={() => setSortBy("price")}
+                onClick={() => toggleSortBy("price")}
                 className="flex w-fit cursor-pointer items-center gap-1"
               >
                 Harga
@@ -75,7 +79,7 @@ const TableProduct = ({ data, isLoading, setSortBy }: TableProductProps) => {
             </th>
             <th scope="col" className="px-6 py-3">
               <span
-                onClick={() => setSortBy("stock")}
+                onClick={() => toggleSortBy("stock")}
                 className="flex w-fit cursor-pointer items-center gap-1"
               >
                 Stok
@@ -120,7 +124,10 @@ const TableProduct = ({ data, isLoading, setSortBy }: TableProductProps) => {
                   </td>
                   <td className="px-6 py-4">{item.discount}%</td>
                   <td className="px-6 py-4">{item.category.name}</td>
-                  <td className="truncate px-6 py-4">
+                  <td
+                    title={item.variants.map((item) => item.name).join(", ")}
+                    className="max-w-60 truncate px-6 py-4"
+                  >
                     {item.variants.map((item) => item.name).join(", ")}
                   </td>
                   <td className="flex items-center justify-center gap-2 px-6 py-4 text-white">
