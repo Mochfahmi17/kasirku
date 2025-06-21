@@ -25,7 +25,7 @@ export async function GET() {
     const totalProducts = await db.product.count();
 
     //* Stock hampir habis
-    const lowStock = await db.product.count({ where: { stock: { lt: 5 } } });
+    const lowStock = await db.product.count({ where: { stock: { lte: 10 } } });
 
     return NextResponse.json(
       {

@@ -4,30 +4,33 @@ const prisma = new PrismaClient();
 
 async function main() {
   // seed category
-  const category = await prisma.productCategory.create({
+  const makanan = await prisma.productCategory.create({
     data: {
-      name: "Minuman",
+      name: "Makanan",
     },
   });
 
   // seed produk
   const product = await prisma.product.create({
     data: {
-      name: "Es Teh Manis",
-      price: 5000,
-      stock: 100,
-      categoryId: category.id,
+      name: "Nasi Goreng",
+      image:
+        "https://asset.kompas.com/crops/U6YxhTLF-vrjgM8PN3RYTHlIxfM=/84x60:882x592/1200x800/data/photo/2021/11/17/61949959e07d3.jpg",
+      price: 13000,
+      stock: 50,
+      categoryId: makanan.id,
     },
   });
 
+  // Seed variant
   const variant = await prisma.productVariant.createMany({
     data: [
-      { name: "Dingin", price: 5000, productId: product.id },
-      { name: "Hangat", price: 5000, productId: product.id },
+      { name: "Original", price: 13000, productId: product.id },
+      { name: "Special", price: 17000, productId: product.id },
     ],
   });
 
-  console.log("Seed successfully!: ", category, product, variant);
+  console.log("Seed successfully!: ", makanan, product, variant);
 }
 
 main()

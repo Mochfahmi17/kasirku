@@ -64,10 +64,12 @@ model ProductCategory {
 model Product {
   id                String              @id @default(cuid())
   name              String
+  image             String
+  image_public_id   String
   description       String?
   price             Int
-  discount          Int                 @default(0)
   stock             Int
+  discount          Int                 @default(0)
   categoryId        String
   category          ProductCategory     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   variants          ProductVariant[]
@@ -81,7 +83,8 @@ model Product {
 model ProductVariant {
   id                String              @id @default(cuid())
   name              String
-  price             Int?
+  price             Int
+  stock             Int
   productId         String
   product           Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
   TransactionDetail TransactionDetail[]
