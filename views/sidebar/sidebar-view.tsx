@@ -6,13 +6,12 @@ const SideBarView = () => {
   return (
     <aside
       aria-label="Sidebar"
-      className="flex h-screen flex-col items-center bg-white"
+      className="hidden h-screen flex-col items-center bg-white lg:flex"
     >
       {/* Header */}
-      <div className="p-2 text-center lg:p-4">
+      <div className="p-4 text-center">
         <Link href="/home" className="text-xl font-bold text-orange-500">
-          <span className="lg:hidden">K</span>
-          <span className="hidden lg:inline">KasirKu</span>
+          KasirKu
         </Link>
       </div>
 

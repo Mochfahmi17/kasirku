@@ -14,15 +14,15 @@ const Logout = () => {
     setDisable(true);
   };
   return (
-    <div className="p-2 lg:p-4">
+    <div className="p-4">
       <Button
         variant="ghost"
         onClick={() => setShowConfirm(true)}
-        className="cursor-pointer rounded-sm p-2 text-center text-xs text-gray-500 transition-all hover:bg-orange-500 hover:text-white hover:shadow-md lg:w-20 lg:rounded-xl lg:py-8"
+        className="w-20 cursor-pointer rounded-sm py-8 text-center text-xs text-gray-500 transition-all hover:bg-orange-500 hover:text-white hover:shadow-md lg:rounded-xl"
       >
         <div className="flex flex-col items-center gap-2">
-          <IoLogOutOutline className="size-4 lg:size-6" />
-          <span className="hidden lg:block">Log Out</span>
+          <IoLogOutOutline className="size-6" />
+          <span>Log Out</span>
         </div>
       </Button>
 

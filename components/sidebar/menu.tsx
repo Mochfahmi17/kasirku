@@ -38,7 +38,7 @@ const menuItem = [
 const Menu = () => {
   const pathname = usePathname();
   return (
-    <nav className="flex-1 overflow-y-auto p-2 lg:p-4">
+    <nav className="flex-1 overflow-y-auto p-4">
       <ul className="flex flex-col items-center justify-center space-y-2">
         {menuItem.map((item, i) => {
           const isActive = pathname === item.href;
@@ -47,7 +47,7 @@ const Menu = () => {
               <Link href={item.href}>
                 <div
                   className={clsx(
-                    "inline-block rounded-sm p-2 text-gray-500 transition-all hover:bg-orange-500 hover:text-white hover:shadow-md active:bg-orange-500 lg:w-20 lg:rounded-xl lg:py-3",
+                    "inline-block w-20 rounded-sm py-3 text-gray-500 transition-all hover:bg-orange-500 hover:text-white hover:shadow-md active:bg-orange-500 lg:rounded-xl",
                     {
                       "bg-orange-500 text-white shadow-md": isActive,
                     },
