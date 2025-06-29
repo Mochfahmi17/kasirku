@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${interFont.className} antialiased`}>
-        <NextTopLoader color="#f97316" showSpinner={false} />
+        <NextTopLoader color="#f97316" showSpinner={false} height={3} />
         {children}
         <Toaster richColors />
       </body>

@@ -7,10 +7,6 @@ const LoginViews = () => {
       headerTitle="Selamat Datang di,"
       headerLogoTitle="KasirKu!"
       headerSubTitle="Login ke akun Anda di bawah ini untuk mengakses sistem kasir dan memulai sesi penjualan Anda hari ini."
-      backButtonText="Don't have an account?"
-      backButtonLabel="Register"
-      backButtonHref="/register"
-      showSocial
     >
       <LoginForm />
     </CardWrapper>

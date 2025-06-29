@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import BackButton from "@/components/auth/back-button";
-import GoogleButton from "@/components/auth/login/google-button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Header from "@/components/auth/header";
 
 type CardWrapperProps = {
@@ -21,10 +14,6 @@ type CardWrapperProps = {
 
 const CardWrapper = ({
   children,
-  backButtonHref,
-  backButtonLabel,
-  backButtonText,
-  showSocial,
   headerTitle,
   headerSubTitle,
   headerLogoTitle,
@@ -39,18 +28,6 @@ const CardWrapper = ({
         />
       </CardHeader>
       <CardContent>{children}</CardContent>
-      {showSocial && (
-        <CardFooter>
-          <GoogleButton />
-        </CardFooter>
-      )}
-      <CardFooter>
-        <BackButton
-          text={backButtonText}
-          href={backButtonHref}
-          label={backButtonLabel}
-        />
-      </CardFooter>
     </Card>
   );
 };

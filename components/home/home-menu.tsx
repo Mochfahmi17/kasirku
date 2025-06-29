@@ -30,7 +30,7 @@ const HomeMenu = ({
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
+              transition={{ duration: 0.3, delay: i * 0.2 }}
             >
               <Link href={`/home/product/${product.id}`}>
                 <CardMenu

@@ -1,8 +1,11 @@
+import { auth } from "@/auth";
 import Logout from "@/components/sidebar/logout";
 import Menu from "@/components/sidebar/menu";
 import Link from "next/link";
+import { use } from "react";
 
 const SideBarView = () => {
+  const session = use(auth());
   return (
     <aside
       aria-label="Sidebar"
@@ -16,7 +19,7 @@ const SideBarView = () => {
       </div>
 
       {/* Body */}
-      <Menu />
+      <Menu role={session ? session.user.role : ""} />
 
       {/* Footer */}
       <Logout />

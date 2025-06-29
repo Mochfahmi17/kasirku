@@ -13,7 +13,6 @@ import { loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -105,17 +104,7 @@ const LoginForm = () => {
                     </div>
                   </div>
                 </FormControl>
-                <div className="flex items-center gap-2">
-                  <FormMessage />
-                  <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="ml-auto w-fit p-0 text-sm hover:text-orange-500"
-                  >
-                    <Link href="/forgot-password">Forgot password?</Link>
-                  </Button>
-                </div>
+                <FormMessage />
               </FormItem>
             )}
           />

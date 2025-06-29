@@ -1,22 +1,14 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import Google from "next-auth/providers/google";
 import { db } from "@/lib/db";
 import { loginSchema } from "@/schema";
 import bcrypt from "bcryptjs";
-import {
-  apiAuthPrefix,
-  authRoutes,
-  DEFAULT_LOGIN_REDIRECT,
-  protectedRoutes,
-  resetPassword,
-} from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, protectedRoutes } from "@/routes";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   providers: [
-    Google,
     Credentials({
       credentials: { email: {}, password: {} },
       async authorize(credentials) {
@@ -43,40 +35,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     authorized({ auth, request }) {
-      const { nextUrl, cookies } = request;
+      const { nextUrl } = request;
       const isLoggedIn = !!auth?.user;
+      const role = auth?.user.role;
 
-      const email = cookies.get("email_for_otp")?.value;
-      const token = cookies.get("otp_verification")?.value;
-
-      const isResetPasswordRoute = resetPassword.includes(nextUrl.pathname);
-      if (!isLoggedIn && isResetPasswordRoute) {
-        if (!email && !token) {
-          return Response.redirect(new URL("/forgot-password", nextUrl));
-        }
-        return true;
-      }
-
-      const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-      if (isApiAuthRoute) {
-        return true;
-      }
-
-      const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-      if (isAuthRoute) {
-        if (isLoggedIn) {
-          return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-        }
-        return true;
-      }
-
-      const isDashboardRoute = protectedRoutes.some(
-        (route) =>
-          nextUrl.pathname === route ||
-          nextUrl.pathname.startsWith(`${route}/`),
-      );
-      if (!isLoggedIn && isDashboardRoute) {
+      if (!isLoggedIn && protectedRoutes.includes(nextUrl.pathname)) {
         return Response.redirect(new URL("/login", nextUrl));
+      }
+
+      if (isLoggedIn && nextUrl.pathname === "/login") {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      }
+
+      if (role === "kasir" && nextUrl.pathname === "/products") {
+        return Response.redirect(new URL("/unauthorized", nextUrl));
       }
 
       return true;

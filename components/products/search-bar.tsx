@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type SearchBarProps = {
@@ -28,22 +28,27 @@ const SearchBar = ({
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
-  const updateParams = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateParams = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
 
-    if (key === "search") {
-      params.set("page", "1");
-    }
+      if (key === "search" && search.length > 0) {
+        params.set("page", "1");
+      } else {
+        params.delete("page");
+      }
 
-    const queryString = params.toString();
-    router.push(queryString ? `?${params.toString()}` : "/products");
-  };
+      const queryString = params.toString();
+      router.push(queryString ? `?${params.toString()}` : "/products");
+    },
+    [router, searchParams, search],
+  );
 
   const handleChangeOrder = (value: string) => {
     setOrder(value);
@@ -65,8 +70,7 @@ const SearchBar = ({
         clearTimeout(debounceTimeout.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, updateParams]);
   return (
     <div className="my-4 flex items-center justify-between">
       <div className="relative hidden w-fit rounded-full bg-slate-100 lg:block">
